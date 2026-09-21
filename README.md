@@ -198,6 +198,35 @@ blackrhino/
 └── README.md                   # Documentação técnica oficial
 ```
 
+### 6.1 Mapeamento das Imagens do Catálogo (`public/images/products`)
+
+Todos os assets fotográficos foram normalizados a partir do acervo original e mapeados para o diretório público de produção:
+
+| Arquivo Original (`images/`) | Caminho Público (`public/images/products/`) | Produto Associado | Ângulo / Finalidade |
+| :--- | :--- | :--- | :--- |
+| `white-2026-09-19_11-37-04.png` | `white-gi-jacket.png` | Kimono Legend Branco | Visão frontal do casaco (Primária) |
+| `white-2026-09-19_11-37-12.png` | `white-gi-pants.png` | Kimono Legend Branco | Calça Ripstop com passadores (Secundária) |
+| `white-2026-09-19_11-37-24.png` | `white-gi-lapel-macro.png` | Kimono Legend Branco | Macro da gola em EVA vulcanizado |
+| `blue-2026-09-19_11-38-32.png` | `blue-gi-jacket.png` | Kimono Legend Azul | Visão frontal do casaco (Primária) |
+| `blue-2026-09-19_11-38-40.png` | `blue-gi-pants.png` | Kimono Legend Azul | Calça Ripstop azul (Secundária) |
+| `blue-2026-09-19_11-37-43.png` | `blue-gi-collar-macro.png` | Kimono Legend Azul | Macro da lapela e trançado 350 GSM |
+| `black-2026-09-19_11-39-05.png` | `black-gi-jacket-angle.png` | Kimono Legend Preto | Casaco em ângulo tático (Primária) |
+| `black-2026-09-19_11-38-54.png` | `black-gi-bag-folded.png` | Kimono Legend Preto | Dobrado com a ecobag de transporte |
+| `black-2026-09-19_11-39-13.png` | `black-gi-lapel-macro.png` | Kimono Legend Preto | Macro da lapela trançada 550 GSM |
+| `black-2026-09-19_11-39-21.png` | `black-gi-pants.png` | Kimono Legend Preto | Calça em lona 10 oz preta (Secundária) |
+| `belt-2026-09-19_11-39-44.png` | `belt-ranked-stack.png` | Faixa Legend | Pilha de graduações oficiais (Primária) |
+| `belt-2026-09-19_11-39-34.png` | `belt-black-bag.png` | Faixa Legend | Faixa preta com sacola de ateliê |
+
+### 6.2 Padrões de Deploy Estático (GitHub Pages)
+
+Para garantir que o site funcione perfeitamente no GitHub Pages sob o subcaminho do repositório (`https://<usuario>.github.io/blackrhino/`):
+
+1. **`basePath` e `assetPrefix`**: Configurados dinamicamente em `next.config.ts` com base no nome do repositório (`/blackrhino`) em produção, mantendo rota raiz limpa (`/`) em desenvolvimento local.
+2. **Carregador de Imagens Personalizado (`src/lib/imageLoader.ts`)**: No Next.js estático (`output: 'export'`), as tags `next/image` não possuem servidor Node para rodar otimização em tempo real (`/_next/image`). O loader injeta o prefixo `/blackrhino` diretamente nos caminhos `/images/products/*`, evitando erro HTTP 404.
+3. **Arquivo `.nojekyll`**: Adicionado em `public/.nojekyll` para que a engine padrão do GitHub Pages (Jekyll) não ignore pastas com prefixo sublinhado (como `_next/static`).
+4. **Página `not-found.tsx`**: Implementada em `src/app/not-found.tsx` para gerar o `out/404.html` estático nativo do Next.js.
+5. **Automação GitHub Actions (`.github/workflows/deploy.yml`)**: Workflow oficial configurado para compilar (`npm run build`) e publicar a pasta `out/` automaticamente a cada `git push`.
+
 ---
 
 ## 7. Fluxo de Dados & Gerenciamento de Estado
