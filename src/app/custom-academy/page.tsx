@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Upload, Sparkles, Shield, Send, CheckCircle2 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { getAssetPath } from "@/utils/assetPath";
 
 export default function CustomAcademyPage() {
   const { formatPrice } = useCart();
@@ -38,9 +39,9 @@ export default function CustomAcademyPage() {
   const totalBatchPrice = unitPrice * tierQty;
 
   const giImageMap = {
-    white: "/images/products/white-gi-jacket.png",
-    blue: "/images/products/blue-gi-jacket.png",
-    black: "/images/products/black-gi-jacket-angle.png",
+    white: getAssetPath("/images/products/white-gi-jacket.png"),
+    blue: getAssetPath("/images/products/blue-gi-jacket.png"),
+    black: getAssetPath("/images/products/black-gi-jacket-angle.png"),
   };
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

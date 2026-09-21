@@ -1,4 +1,5 @@
 import { Product, MacroHotspot } from "@/types/product";
+import { getAssetPath } from "@/utils/assetPath";
 
 export const PRODUCTS: Product[] = [
   {
@@ -33,11 +34,11 @@ export const PRODUCTS: Product[] = [
       A4: 4,
     },
     images: {
-      primary: "/images/products/white-gi-jacket.png",
-      secondary: "/images/products/white-gi-pants.png",
-      macroCollar: "/images/products/white-gi-lapel-macro.png",
-      pants: "/images/products/white-gi-pants.png",
-      lifestyle: "/images/products/white-gi-lapel-macro.png",
+      primary: getAssetPath("/images/products/white-gi-jacket.png"),
+      secondary: getAssetPath("/images/products/white-gi-pants.png"),
+      macroCollar: getAssetPath("/images/products/white-gi-lapel-macro.png"),
+      pants: getAssetPath("/images/products/white-gi-pants.png"),
+      lifestyle: getAssetPath("/images/products/white-gi-lapel-macro.png"),
     },
     description:
       "Desenvolvido em nosso ateliê em Brasília, o Kimono Legend Branco representa o ápice do kimono de competição. Tecido em algodão compacto penteado de 450 GSM, ele entrega estalo na pegada sem o peso excessivo dos trançados antigos. Equipado com gola em EVA vulcanizado revestida em sarja de alta densidade, dificulta a pegada do adversário e não encharca de suor nas lutas duras.",
@@ -101,11 +102,11 @@ export const PRODUCTS: Product[] = [
       A4: 2,
     },
     images: {
-      primary: "/images/products/blue-gi-jacket.png",
-      secondary: "/images/products/blue-gi-pants.png",
-      macroCollar: "/images/products/blue-gi-collar-macro.png",
-      pants: "/images/products/blue-gi-pants.png",
-      lifestyle: "/images/products/blue-gi-collar-macro.png",
+      primary: getAssetPath("/images/products/blue-gi-jacket.png"),
+      secondary: getAssetPath("/images/products/blue-gi-pants.png"),
+      macroCollar: getAssetPath("/images/products/blue-gi-collar-macro.png"),
+      pants: getAssetPath("/images/products/blue-gi-pants.png"),
+      lifestyle: getAssetPath("/images/products/blue-gi-collar-macro.png"),
     },
     description:
       "Quando cada grama conta na balança antes da primeira luta, o Kimono Legend Azul é sua escolha cirúrgica. Economiza até 450g em relação a kimonos convencionais, mantendo uma gola firme e resistente com núcleo estruturado. O trançado micro-pearl acelera a evaporação do suor, garantindo leveza e agilidade nas passagens de guarda e transições velozes.",
@@ -169,11 +170,11 @@ export const PRODUCTS: Product[] = [
       A4: 5,
     },
     images: {
-      primary: "/images/products/black-gi-jacket-angle.png",
-      secondary: "/images/products/black-gi-bag-folded.png",
-      macroCollar: "/images/products/black-gi-lapel-macro.png",
-      pants: "/images/products/black-gi-pants.png",
-      lifestyle: "/images/products/black-gi-bag-folded.png",
+      primary: getAssetPath("/images/products/black-gi-jacket-angle.png"),
+      secondary: getAssetPath("/images/products/black-gi-bag-folded.png"),
+      macroCollar: getAssetPath("/images/products/black-gi-lapel-macro.png"),
+      pants: getAssetPath("/images/products/black-gi-pants.png"),
+      lifestyle: getAssetPath("/images/products/black-gi-bag-folded.png"),
     },
     description:
       "Construído para os pesados, passadores de pressão e atletas casca-grossa. O Kimono Legend Preto une a durabilidade lendária dos trançados duplos tradicionais a uma modelagem anatômica moderna. A gola conta com núcleo vulcanizado denso de 12 camadas que cansa os antebraços do adversário na disputa de pegada. A calça em lona 10 oz aguenta o atrito dos treinos mais duros ano após ano.",
@@ -237,9 +238,9 @@ export const PRODUCTS: Product[] = [
       A4: 10,
     },
     images: {
-      primary: "/images/products/belt-ranked-stack.png",
-      secondary: "/images/products/belt-black-bag.png",
-      lifestyle: "/images/products/belt-black-bag.png",
+      primary: getAssetPath("/images/products/belt-ranked-stack.png"),
+      secondary: getAssetPath("/images/products/belt-black-bag.png"),
+      lifestyle: getAssetPath("/images/products/belt-black-bag.png"),
     },
     description:
       "Uma faixa de Jiu-Jitsu jamais deve desfiar precocemente ou desamarrar sozinha no meio do rola. As faixas graduadas Black Rhino Legend são construídas com tecido trançado pearl weave autêntico de 450 GSM envolvendo um núcleo denso de lona de algodão. Possui 12 fileiras longitudinais de costura de precisão, etiqueta bordada do ateliê e ponteira regulamentar de 10cm para os graus de graduação.",
@@ -302,10 +303,10 @@ export const PRODUCTS: Product[] = [
       A4: 5,
     },
     images: {
-      primary: "/images/products/black-gi-pants.png",
-      secondary: "/images/products/blue-gi-pants.png",
-      pants: "/images/products/white-gi-pants.png",
-      lifestyle: "/images/products/black-gi-pants.png",
+      primary: getAssetPath("/images/products/black-gi-pants.png"),
+      secondary: getAssetPath("/images/products/blue-gi-pants.png"),
+      pants: getAssetPath("/images/products/white-gi-pants.png"),
+      lifestyle: getAssetPath("/images/products/black-gi-pants.png"),
     },
     description:
       "As calças de jiu-jitsu sofrem com o atrito contínuo dos joelhos no tatame, raspagens e tração de guardas. Em vez de descartar seu casaco Legend que ainda está novo, nosso programa modular Black Rhino Legend permite renovar seu equipamento com economia. Construída em Ripstop Diamantado 10 oz de alta resistência com reforço entrepernas em tecido trançado e 6 passadores.",
@@ -368,10 +369,10 @@ export const PRODUCTS: Product[] = [
       A4: 3,
     },
     images: {
-      primary: "/images/products/white-gi-jacket.png",
-      secondary: "/images/products/blue-gi-jacket.png",
-      macroCollar: "/images/products/black-gi-jacket-angle.png",
-      lifestyle: "/images/products/white-gi-lapel-macro.png",
+      primary: getAssetPath("/images/products/white-gi-jacket.png"),
+      secondary: getAssetPath("/images/products/blue-gi-jacket.png"),
+      macroCollar: getAssetPath("/images/products/black-gi-jacket-angle.png"),
+      lifestyle: getAssetPath("/images/products/white-gi-lapel-macro.png"),
     },
     description:
       "Seja para ter um casaco extra no campeonato para lutas sequenciais ou para substituir uma peça antiga, nosso vagui avulso Black Rhino Legend entrega a lendária gola em EVA vulcanizado, corte anatômico e acabamento do ateliê de Brasília diretamente para o seu jogo.",
@@ -408,21 +409,21 @@ export const CART_ADDONS = [
     title: "Black Rhino 0.5\" Cohesive Finger Tape (4-Pack)",
     subhead: "High-adhesion sweat-proof rayon tape for knuckle & grip stability",
     price: 39,
-    image: "/images/products/black-gi-bag-folded.png",
+    image: getAssetPath("/images/products/black-gi-bag-folded.png"),
   },
   {
     id: "addon-drawstring",
     title: "Reinforced Silicone-Dipped Gi Drawstring Cord",
     subhead: "6-channel high-density woven replacement cord with silicone grip ends",
     price: 29,
-    image: "/images/products/black-gi-pants.png",
+    image: getAssetPath("/images/products/black-gi-pants.png"),
   },
   {
     id: "addon-bag",
     title: "Black Rhino Breathable Ripstop Gi Travel Bag",
     subhead: "Water-repellent anti-odor gear bag with drawstring harness",
     price: 79,
-    image: "/images/products/black-gi-bag-folded.png",
+    image: getAssetPath("/images/products/black-gi-bag-folded.png"),
   },
 ];
 
@@ -438,7 +439,7 @@ export const WEAVE_MATRIX_DATA = [
     dryTime: "2.2 Hours",
     collarThickness: "10 mm Vulcanized EVA",
     feel: "Featherlight, supple, zero hindrance",
-    image: "/images/products/blue-gi-jacket.png",
+    image: getAssetPath("/images/products/blue-gi-jacket.png"),
     pantFabric: "10 oz Diamond Ripstop",
   },
   {
@@ -452,7 +453,7 @@ export const WEAVE_MATRIX_DATA = [
     dryTime: "3.5 Hours",
     collarThickness: "12 mm Vulcanized EVA",
     feel: "Crisp, structured, high grip rejection",
-    image: "/images/products/white-gi-jacket.png",
+    image: getAssetPath("/images/products/white-gi-jacket.png"),
     pantFabric: "10 oz Diamond Ripstop with Pearl Gusset",
   },
   {
@@ -466,7 +467,7 @@ export const WEAVE_MATRIX_DATA = [
     dryTime: "5.5 Hours",
     collarThickness: "14 mm Dense Vulcanized EVA",
     feel: "Casca grossa, gola inquebrável, cansaço brutal para a pegada do adversário",
-    image: "/images/products/black-gi-jacket-angle.png",
+    image: getAssetPath("/images/products/black-gi-jacket-angle.png"),
     pantFabric: "10 oz Heavy Cotton Canvas",
   },
 ];

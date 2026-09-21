@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { CheckoutModal } from "@/components/checkout/CheckoutModal";
+import { getAssetPath } from "@/utils/assetPath";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://blackrhinokimonos.com"),
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "Black Rhino Kimonos",
     images: [
       {
-        url: "/images/products/black-gi-jacket-angle.png",
+        url: getAssetPath("/images/products/black-gi-jacket-angle.png"),
         width: 1200,
         height: 630,
         alt: "Black Rhino Kimonos",

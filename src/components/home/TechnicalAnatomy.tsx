@@ -5,6 +5,7 @@ import Image from "next/image";
 import { TECHNICAL_HOTSPOTS } from "@/data/products";
 import { Crosshair } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { getAssetPath } from "@/utils/assetPath";
 
 export function TechnicalAnatomy() {
   const [activeHotspotId, setActiveHotspotId] = useState<string>("collar");
@@ -71,7 +72,7 @@ export function TechnicalAnatomy() {
           <div className="lg:col-span-7 bg-slate-surface border border-slate-border rounded-2xl p-6 sm:p-8 relative overflow-hidden">
             <div className="relative aspect-[4/5] sm:aspect-square w-full max-w-lg mx-auto bg-obsidian-900 rounded-xl overflow-hidden border border-slate-border/50">
               <Image
-                src="/images/products/white-gi-jacket.png"
+                src={getAssetPath("/images/products/white-gi-jacket.png")}
                 alt="Black Rhino Gi Technical Anatomy Blueprint"
                 fill
                 className="object-contain p-4"

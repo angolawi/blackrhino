@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
+import { getAssetPath } from "@/utils/assetPath";
 
 export function HeroSection() {
   const { t } = useLanguage();
@@ -14,7 +15,7 @@ export function HeroSection() {
       {/* Background Graphic & Texture */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/products/black-gi-lapel-macro.png"
+          src={getAssetPath("/images/products/black-gi-lapel-macro.png")}
           alt="Black Rhino Kimono Heavy Pearl Weave Texture"
           fill
           priority
@@ -95,7 +96,7 @@ export function HeroSection() {
       <div className="hidden xl:block absolute right-12 bottom-12 z-20 w-80 bg-slate-surface/90 backdrop-blur-md border border-slate-border rounded-xl p-4 shadow-2xl">
         <div className="relative h-44 w-full bg-obsidian-900 rounded-lg overflow-hidden mb-3 border border-slate-border/50">
           <Image
-            src="/images/products/black-gi-jacket-angle.png"
+            src={getAssetPath("/images/products/black-gi-jacket-angle.png")}
             alt="Black Rhino Trançado Pesado 550"
             fill
             className="object-contain p-2"

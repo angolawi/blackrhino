@@ -6,6 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { GiCut } from "@/types/product";
 import { ShoppingBag, Layers } from "lucide-react";
+import { getAssetPath } from "@/utils/assetPath";
 
 export default function SeparatesPage() {
   const { addItem, formatPrice } = useCart();
@@ -22,15 +23,15 @@ export default function SeparatesPage() {
   const [jacketCut, setJacketCut] = useState<GiCut>("A2");
 
   const pantsImages = {
-    black: "/images/products/black-gi-pants.png",
-    blue: "/images/products/blue-gi-pants.png",
-    white: "/images/products/white-gi-pants.png",
+    black: getAssetPath("/images/products/black-gi-pants.png"),
+    blue: getAssetPath("/images/products/blue-gi-pants.png"),
+    white: getAssetPath("/images/products/white-gi-pants.png"),
   };
 
   const jacketImages = {
-    white: "/images/products/white-gi-jacket.png",
-    blue: "/images/products/blue-gi-jacket.png",
-    black: "/images/products/black-gi-jacket-angle.png",
+    white: getAssetPath("/images/products/white-gi-jacket.png"),
+    blue: getAssetPath("/images/products/blue-gi-jacket.png"),
+    black: getAssetPath("/images/products/black-gi-jacket-angle.png"),
   };
 
   const pantsPrice = pantsMaterial === "ripstop" ? 189 : 199;
