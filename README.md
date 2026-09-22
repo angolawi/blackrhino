@@ -122,7 +122,7 @@ Implementado em `src/components/checkout/CheckoutModal.tsx`:
 
 A interface foi concebida sob uma estética de alta durabilidade militar e funcionalidade de combate:
 
-### Paleta de Cores
+### A Paleta de Cores
 - **Obsidian Dark (Base)**:
   - `obsidian` (`#0F0F11`): Fundo principal do ateliê.
   - `obsidian-950` (`#08080A`): Barras de cabeçalho, modais e fundos profundos.
