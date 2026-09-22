@@ -13,7 +13,7 @@ export function generateWhatsAppOrderUrl(items: CartItem[], totalAmount: number)
 
   const timestamp = Date.now().toString().slice(-6);
   
-  const header = `*Novo Pedido via Site* 🛍️\nPedido: #${timestamp}\n\n`;
+  const header = `*Novo Pedido via Site* \u{1F6D2}\nPedido: #${timestamp}\n\n`;
   
   const itemsList = items
     .map((item) => {
