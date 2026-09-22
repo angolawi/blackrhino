@@ -6,6 +6,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { X, Trash2, Plus, Minus, ArrowRight, ShieldAlert, Sparkles, PackageCheck } from "lucide-react";
 import Image from "next/image";
 import { CART_ADDONS } from "@/data/products";
+import { WhatsAppCheckoutButton } from "./WhatsAppCheckoutButton";
 
 export function CartDrawer() {
   const {
@@ -18,7 +19,6 @@ export function CartDrawer() {
     freeShippingThreshold,
     amountUntilFreeShipping,
     formatPrice,
-    openCheckout,
     addItem,
   } = useCart();
   const { language, t } = useLanguage();
@@ -239,14 +239,9 @@ export function CartDrawer() {
               </div>
             </div>
 
-            <button
-              onClick={openCheckout}
-              disabled={items.length === 0}
-              className="w-full bg-rhinogold hover:bg-rhinogold-light disabled:opacity-40 disabled:cursor-not-allowed text-obsidian-950 font-bold py-3.5 px-4 rounded-lg uppercase tracking-wider text-xs transition-all flex items-center justify-center space-x-2 shadow-lg shadow-rhinogold/20"
-            >
-              <span>{t("proceedCheckout")}</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <WhatsAppCheckoutButton items={items} totalAmount={subtotal} />
+
+
 
             <p className="text-center text-[10px] text-bonewhite-dim tracking-wider uppercase">
               {language === "pt"

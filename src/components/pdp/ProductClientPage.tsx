@@ -254,16 +254,7 @@ export function ProductClientPage({ product, relatedProducts }: ProductClientPag
               <span>{t("addToMatBag")} • {formatPrice(product.price)}</span>
             </button>
 
-            <button
-              onClick={() => {
-                handleAddToCart();
-                openCheckout();
-              }}
-              className="w-full bg-slate-surface hover:bg-slate-hover border border-slate-border text-bonewhite font-bold py-3 px-6 rounded-xl uppercase tracking-wider text-xs transition-all flex items-center justify-center space-x-2"
-            >
-              <Zap className="w-4 h-4 text-rhinogold" />
-              <span>{t("expressCheckout")}</span>
-            </button>
+
           </div>
 
           {/* Shipping and Return Badges */}
