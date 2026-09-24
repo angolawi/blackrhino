@@ -163,40 +163,58 @@ export function calculateRegionalShippingQuotes(
   });
 }
 
+import { calculateMelhorEnvioRates } from "./melhorEnvio";
+
 /**
- * Função principal (Adapter) preparada para transição futura para Melhor Envio / SuperFrete (Opção 2)
+ * Função principal (Adapter): consulta prioritariamente o provedor Melhor Envio
+ * e utiliza a tabela regional calibrada como fallback resiliente e determinístico.
  */
 export async function getShippingQuotes(
   address: AddressInfo,
   subtotal: number,
   items: CartItem[]
 ): Promise<ShippingQuote[]> {
-  const externalApiUrl = process.env.NEXT_PUBLIC_SHIPPING_API_URL;
+  const hasMelhorEnvioConfig = Boolean(
+    process.env.NEXT_PUBLIC_MELHOR_ENVIO_TOKEN ||
+    process.env.MELHOR_ENVIO_TOKEN ||
+    process.env.NEXT_PUBLIC_MELHOR_ENVIO_ENDPOINT ||
+    process.env.NEXT_PUBLIC_SHIPPING_API_URL
+  );
 
-  // Futura Opção 2: Se houver URL de worker configurada, faz chamada à API externa
-  if (externalApiUrl) {
+  // 1. Tenta cotação via API do Melhor Envio
+  if (hasMelhorEnvioConfig && items.length > 0) {
     try {
-      const response = await fetch(externalApiUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          postalCode: cleanCep(address.cep),
-          subtotal,
-          items,
-          weightKg: calculateCartWeight(items),
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (Array.isArray(data.quotes) && data.quotes.length > 0) {
-          return data.quotes;
+      const apiQuotes = await calculateMelhorEnvioRates(address, subtotal, items);
+
+      if (Array.isArray(apiQuotes) && apiQuotes.length > 0) {
+        // Se a entrega for no Distrito Federal, inclui a opção de Retirada no Ateliê (Sem custo)
+        if (address.state.toUpperCase() === "DF") {
+          const pickupOption: ShippingQuote = {
+            id: "pickup",
+            name: "Retirada no Ateliê Black Rhino",
+            carrier: "local_pickup",
+            price: 0,
+            originalPrice: 0,
+            deliveryDaysMin: 1,
+            deliveryDaysMax: 1,
+            isFree: true,
+            badge: "Sem Custo",
+          };
+
+          return [pickupOption, ...apiQuotes].sort((a, b) => {
+            if (a.isFree && !b.isFree) return -1;
+            if (!a.isFree && b.isFree) return 1;
+            return a.price - b.price;
+          });
         }
+
+        return apiQuotes;
       }
     } catch (e) {
-      console.warn("Falha no serviço externo de frete, usando tabela regional como fallback seguro:", e);
+      console.warn("Falha no provedor Melhor Envio, recorrendo à tabela regional calibrada:", e);
     }
   }
 
-  // Opção 1: Motor de cálculo local calibrado (rápido, determinístico e sem custos)
+  // 2. Fallback resiliente: Motor de cálculo local calibrado (DF, Centro-Oeste, Sudeste, Sul, Nordeste, Norte)
   return calculateRegionalShippingQuotes(address, subtotal, items);
 }

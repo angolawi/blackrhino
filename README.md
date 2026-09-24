@@ -131,8 +131,13 @@ Implementado em `src/components/cart/ShippingCalculator.tsx`, `src/lib/shipping.
 - **Fechamento Consolidado no WhatsApp**:
   - O botão *"Finalizar Pedido via WhatsApp"* monta e codifica uma mensagem profissional com: Número do Pedido, Itens, Cortes/Tamanhos, Subtotal, Modalidade de Frete escolhida com prazo em dias úteis, Endereço de Entrega (CEP, Bairro, Cidade/UF) e **Total Final com frete**.
   - Permite envio mesmo se o cliente preferir não cotar o CEP (indicando frete *"A calcular no atendimento"* para nunca bloquear a conversão).
-- **Arquitetura Pluggable (Evolução Futura)**:
-  - Construído sob o padrão *Adapter*. Caso futuramente seja implementada uma função serverless intermediária com token do **Melhor Envio** ou **SuperFrete**, basta preencher a variável `NEXT_PUBLIC_SHIPPING_API_URL` sem precisar alterar o frontend ou o estado do carrinho.
+- **Integração com Melhor Envio (Tempo Real)**:
+  - **API Oficial**: Conexão com o endpoint `/api/v2/me/shipment/calculate` do **Melhor Envio**, cotando dinamicamente múltiplos provedores: Correios (PAC, SEDEX), Jadlog (.Package, .Com), Loggi, Total Express, Azul Cargo e JeT.
+  - **Exibição Visual de Transportadoras**: Renderização dos logotipos oficiais das transportadoras diretamente no calculador de frete.
+  - **Regra de Frete Grátis**: Compras a partir de **R$ 350,00** qualificam a modalidade mais econômica como **GRÁTIS (R$ 0,00)** automaticamente, mantendo as opções expressas disponíveis.
+  - **Retirada no Ateliê Preservada**: Clientes de Brasília-DF contam sempre com a opção de retirada presencial gratuita integrada às opções da API.
+  - **Fallback Regional Resiliente**: Caso ocorra indisponibilidade temporária de rede ou restrição de CORS, o sistema ativa imediatamente a tabela calibrada local, assegurando zero atrito no checkout.
+  - **Proxy Worker Seguro (Cloudflare / Serverless)**: Script `workers/melhor-envio-proxy.js` pronto para publicação gratuita em 2 minutos, protegendo as credenciais de administração e liberando CORS com conformidade total ao GitHub Pages.
 
 ---
 
@@ -208,13 +213,16 @@ blackrhino/
 │   │   └── shippingRates.ts    # Tabela regional de frete por estado calibrada a partir de Brasília
 │   ├── lib/
 │   │   ├── imageLoader.ts      # Carregador de assets com basePath para GitHub Pages
-│   │   ├── shipping.ts         # Motor de frete (ViaCEP, BrasilAPI e Adapter de cotações)
+│   │   ├── melhorEnvio.ts      # Integração oficial da API v2 do Melhor Envio
+│   │   ├── shipping.ts         # Motor de frete (ViaCEP, BrasilAPI e Adapter com fallback)
 │   │   └── whatsapp.ts         # Formatador de pedido consolidado com frete para WhatsApp
 │   ├── translations/
 │   │   └── dictionary.ts       # Dicionário de termos técnicos do Jiu-Jitsu e textos de frete
 │   └── types/
 │       ├── product.ts          # Interfaces TypeScript (Product, GiCut, CartItem, etc.)
 │       └── shipping.ts         # Interfaces de cotação de frete, endereço e transportadoras
+├── workers/
+│   └── melhor-envio-proxy.js   # Cloudflare Worker / Serverless Proxy para CORS e credenciais
 ├── next.config.ts              # Configuração oficial do Next.js
 ├── tailwind.config.ts          # Tema tático, paleta de cores e tipografia
 ├── tsconfig.json               # Configurações do TypeScript e alias (@/*)
