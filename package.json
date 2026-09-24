@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "proxy": "node --env-file=.env.local scripts/local-proxy.mjs",
+    "dev:all": "node --env-file=.env.local scripts/local-proxy.mjs & next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
