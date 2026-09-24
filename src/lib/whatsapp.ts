@@ -22,27 +22,9 @@ export function generateWhatsAppOrderUrl(
   });
 
   const timestamp = Date.now().toString().slice(-6);
-
-  let items: CartItem[];
-  let subtotal: number;
-  let totalAmount: number;
-  let shippingQuote: ShippingQuote | null | undefined;
-  let shippingAddress: AddressInfo | null | undefined;
-
-  if (Array.isArray(itemsOrPayload)) {
-    items = itemsOrPayload;
-    totalAmount = maybeTotalAmount ?? items.reduce((s, i) => s + i.price * i.quantity, 0);
-    subtotal = totalAmount;
-  } else {
-    items = itemsOrPayload.items;
-    totalAmount = itemsOrPayload.totalAmount;
-    subtotal = itemsOrPayload.subtotal ?? items.reduce((s, i) => s + i.price * i.quantity, 0);
-    shippingQuote = itemsOrPayload.shippingQuote;
-    shippingAddress = itemsOrPayload.shippingAddress;
-  }
-
-  const header = `*Novo Pedido via Site • Black Rhino*\nPedido: #${timestamp}\n\n*Itens Selecionados:*\n`;
-
+  
+  const header = `*Novo Pedido via Site*\nPedido: #${timestamp}\n\n`;
+  
   const itemsList = items
     .map((item) => {
       const itemSubtotal = item.quantity * item.price;
