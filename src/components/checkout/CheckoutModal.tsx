@@ -15,6 +15,8 @@ export function CheckoutModal() {
     closeCheckout,
     currency,
     freeShippingThreshold,
+    shippingCost: contextShippingCost,
+    selectedShippingQuote,
   } = useCart();
   const { language, t } = useLanguage();
   const [step, setStep] = useState<"details" | "processing" | "success">("details");
@@ -53,7 +55,13 @@ export function CheckoutModal() {
     closeCheckout();
   };
 
-  const shippingCost = subtotal >= freeShippingThreshold ? 0 : (language === "pt" ? 35 : 15);
+  const shippingCost = selectedShippingQuote
+    ? selectedShippingQuote.price
+    : subtotal >= freeShippingThreshold
+    ? 0
+    : language === "pt"
+    ? 35
+    : 15;
   const tax = language === "pt" ? 0 : subtotal * 0.08;
   const total = subtotal + shippingCost + tax;
 
@@ -287,7 +295,13 @@ export function CheckoutModal() {
                   <span>{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-bonewhite-muted">
-                  <span>{language === "pt" ? "Frete Expresso para o Tatame" : "Mat Priority Shipping"}</span>
+                  <span>
+                    {selectedShippingQuote
+                      ? selectedShippingQuote.name
+                      : language === "pt"
+                      ? "Frete Expresso para o Tatame"
+                      : "Mat Priority Shipping"}
+                  </span>
                   <span>{shippingCost === 0 ? (language === "pt" ? "GRÁTIS (Qualificado)" : "FREE (Qualified)") : formatPrice(shippingCost)}</span>
                 </div>
                 <div className="flex justify-between text-bonewhite-muted">

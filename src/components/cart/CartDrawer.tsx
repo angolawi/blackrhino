@@ -7,6 +7,7 @@ import { X, Trash2, Plus, Minus, ArrowRight, ShieldAlert, Sparkles, PackageCheck
 import Image from "next/image";
 import { CART_ADDONS } from "@/data/products";
 import { WhatsAppCheckoutButton } from "./WhatsAppCheckoutButton";
+import { ShippingCalculator } from "./ShippingCalculator";
 
 export function CartDrawer() {
   const {
@@ -20,6 +21,9 @@ export function CartDrawer() {
     amountUntilFreeShipping,
     formatPrice,
     addItem,
+    shippingAddress,
+    selectedShippingQuote,
+    finalTotal,
   } = useCart();
   const { language, t } = useLanguage();
 
@@ -224,24 +228,62 @@ export function CartDrawer() {
                 ))}
               </div>
             </div>
+            {/* Brazilian Shipping Calculator */}
+            <div className="pt-4 border-t border-slate-border">
+              <ShippingCalculator />
+            </div>
           </div>
 
           {/* Footer Subtotal & Checkout */}
-          <div className="p-5 bg-obsidian-950 border-t border-slate-border space-y-3">
-            <div className="space-y-1 text-xs">
+          <div className="p-5 bg-obsidian-950 border-t border-slate-border space-y-3.5">
+            <div className="space-y-1.5 text-xs">
               <div className="flex justify-between text-bonewhite-muted">
                 <span>{t("subtotal")}</span>
-                <span className="font-semibold text-bonewhite">{formatPrice(subtotal)}</span>
+                <span className="font-semibold text-bonewhite font-mono">{formatPrice(subtotal)}</span>
               </div>
+
               <div className="flex justify-between text-bonewhite-muted">
-                <span>{t("shipping")}</span>
-                <span>{subtotal >= freeShippingThreshold ? t("free") : t("calculatedStep2")}</span>
+                <span>
+                  {t("shipping")}{" "}
+                  {selectedShippingQuote ? (
+                    <span className="text-[11px] text-rhinogold">({selectedShippingQuote.name})</span>
+                  ) : (
+                    ""
+                  )}
+                </span>
+                <span>
+                  {selectedShippingQuote ? (
+                    selectedShippingQuote.isFree ? (
+                      <strong className="text-emerald-400 font-mono">{t("free")}</strong>
+                    ) : (
+                      <span className="font-semibold text-bonewhite font-mono">
+                        {formatPrice(selectedShippingQuote.price)}
+                      </span>
+                    )
+                  ) : (
+                    <span className="text-[11px] text-bonewhite-dim">{t("shippingNotCalculated")}</span>
+                  )}
+                </span>
+              </div>
+
+              <div className="border-t border-slate-border/80 pt-2 flex justify-between font-bold text-sm text-bonewhite">
+                <span className="text-rhinogold uppercase tracking-wide text-xs flex items-center">
+                  {t("totalWithShipping")}
+                </span>
+                <span className="text-rhinogold font-mono text-base">
+                  {formatPrice(finalTotal)}
+                </span>
               </div>
             </div>
 
-            <WhatsAppCheckoutButton items={items} totalAmount={subtotal} />
-
-
+            <WhatsAppCheckoutButton
+              items={items}
+              subtotal={subtotal}
+              totalAmount={finalTotal}
+              shippingQuote={selectedShippingQuote}
+              shippingAddress={shippingAddress}
+              label={t("finalizeViaWhatsApp")}
+            />
 
             <p className="text-center text-[10px] text-bonewhite-dim tracking-wider uppercase">
               {language === "pt"
