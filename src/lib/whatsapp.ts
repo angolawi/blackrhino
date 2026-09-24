@@ -13,17 +13,6 @@ export function generateWhatsAppOrderUrl(
   itemsOrPayload: CartItem[] | WhatsAppOrderPayload,
   maybeTotalAmount?: number
 ): string {
-  const isPayload = !Array.isArray(itemsOrPayload);
-  const items = isPayload ? itemsOrPayload.items : itemsOrPayload;
-  const shippingQuote = isPayload ? itemsOrPayload.shippingQuote : null;
-  const shippingAddress = isPayload ? itemsOrPayload.shippingAddress : null;
-  const subtotal = isPayload
-    ? itemsOrPayload.subtotal ?? items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-    : items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const totalAmount = isPayload
-    ? itemsOrPayload.totalAmount
-    : (maybeTotalAmount ?? subtotal);
-
   const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_PHONE_NUMBER || "5561999999999";
   const cleanPhone = phoneNumber.replace(/\D/g, "");
 
