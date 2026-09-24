@@ -49,10 +49,14 @@ export default {
 
     try {
       // Obtém o token configurado no ambiente do Worker ou no cabeçalho Authorization da requisição
-      const incomingAuth = request.headers.get("Authorization");
-      const token =
+      const rawToken =
         env.MELHOR_ENVIO_TOKEN ||
-        (incomingAuth ? incomingAuth.replace(/^Bearer\s+/i, "") : null);
+        request.headers.get("Authorization") ||
+        request.headers.get("authorization");
+
+      const token = rawToken
+        ? rawToken.replace(/^Bearer\s+/i, "").trim().replace(/^["']|["']$/g, "")
+        : null;
 
       if (!token) {
         return new Response(
