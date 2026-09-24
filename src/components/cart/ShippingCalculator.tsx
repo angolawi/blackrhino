@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { formatCep, cleanCep } from "@/lib/shipping";
+import { ShippingQuote } from "@/types/shipping";
 import {
   Truck,
   MapPin,
@@ -54,8 +55,20 @@ export function ShippingCalculator() {
     setInputCep("");
   };
 
-  const getCarrierIcon = (carrier: string) => {
-    switch (carrier) {
+  const getCarrierIcon = (quote: ShippingQuote) => {
+    if (quote.company?.picture) {
+      return (
+        <div className="w-5 h-5 rounded bg-white/95 p-0.5 flex items-center justify-center flex-shrink-0 shadow-sm overflow-hidden">
+          <img
+            src={quote.company.picture}
+            alt={quote.company.name}
+            className="w-full h-full object-contain"
+          />
+        </div>
+      );
+    }
+
+    switch (quote.carrier) {
       case "blackrhino_express":
         return <Zap className="w-4 h-4 text-rhinogold flex-shrink-0" />;
       case "local_pickup":
@@ -193,7 +206,7 @@ export function ShippingCalculator() {
                       {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-obsidian-950" />}
                     </div>
 
-                    {getCarrierIcon(quote.carrier)}
+                    {getCarrierIcon(quote)}
 
                     <div>
                       <div className="flex items-center space-x-1.5">
