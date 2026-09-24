@@ -18,6 +18,7 @@
    - [3.7 Estúdio B2B de Bordados para Equipes & Academias](#37-estúdio-b2b-de-bordados-para-equipes--academias)
    - [3.8 Mochila de Treino (Carrinho) com Frete Grátis Inteligente](#38-mochila-de-treino-carrinho-com-frete-grátis-inteligente)
    - [3.9 Checkout Transparente com PIX Instantâneo & Cartão](#39-checkout-transparente-com-pix-instantâneo--cartão)
+   - [3.10 Cálculo de Frete Estimado Brasileiro & Fechamento no WhatsApp](#310-cálculo-de-frete-estimado-brasileiro--fechamento-no-whatsapp)
 4. [Identidade Visual & Design System Tático](#4-identidade-visual--design-system-tático)
 5. [Stack Tecnológica & Dependências](#5-stack-tecnológica--dependências)
 6. [Estrutura de Diretórios](#6-estrutura-de-diretórios)
@@ -114,7 +115,24 @@ Implementada em `src/components/cart/CartDrawer.tsx`:
 Implementado em `src/components/checkout/CheckoutModal.tsx`:
 - Suporte a **PIX com QR Code dinâmico** e chave Copia e Cola instantânea.
 - Cartão de crédito nacional e internacional.
-- Cálculo automático de frete e aviso de *"Impostos & Tributos: Inclusos no Preço"*.
+- Cálculo automático de frete sincronizado com a cotação escolhida e aviso de *"Impostos & Tributos: Inclusos no Preço"*.
+
+### 3.10 Cálculo de Frete Estimado Brasileiro & Fechamento no WhatsApp
+Implementado em `src/components/cart/ShippingCalculator.tsx`, `src/lib/shipping.ts`, `src/data/shippingRates.ts` e `src/lib/whatsapp.ts`:
+- **Consulta Aberta & Resiliente de CEP**:
+  - Máscara automática de 8 dígitos (`00000-000`).
+  - Consulta assíncrona gratuita via **ViaCEP** com fallback automático para **BrasilAPI**, identificando logradouro, bairro, cidade e estado sem custos ou necessidade de chaves de API pagas.
+  - Link auxiliar *"Não sei meu CEP"* direcionando para a busca oficial dos Correios.
+- **Tabela Regional Calibrada a partir de Brasília/DF (Origem do Ateliê - CEP 70800-200)**:
+  - **Distrito Federal (Local)**: *Retirada no Ateliê (Grátis)*, *Motoboy Tatame DF (1 a 2 dias úteis)* e *SEDEX Local*.
+  - **Demais Estados (SP, RJ, MG, Sul, Centro-Oeste, Nordeste, Norte)**: *PAC*, *SEDEX Expresso* e *Transportadora Jadlog (.Package)*.
+  - **Cálculo Progressivo de Peso**: Considera o peso real dos kimonos (1,6 kg a 2,1 kg para trançados pesados 550 GSM), faixas e acessórios, aplicando taxa marginal para pacotes volumosos.
+  - **Regra de Frete Grátis**: Compras a partir de **R$ 350,00** qualificam o PAC ou Retirada como **GRÁTIS (R$ 0,00)** automaticamente, mantendo a opção de SEDEX pago para atletas com urgência de campeonato.
+- **Fechamento Consolidado no WhatsApp**:
+  - O botão *"Finalizar Pedido via WhatsApp"* monta e codifica uma mensagem profissional com: Número do Pedido, Itens, Cortes/Tamanhos, Subtotal, Modalidade de Frete escolhida com prazo em dias úteis, Endereço de Entrega (CEP, Bairro, Cidade/UF) e **Total Final com frete**.
+  - Permite envio mesmo se o cliente preferir não cotar o CEP (indicando frete *"A calcular no atendimento"* para nunca bloquear a conversão).
+- **Arquitetura Pluggable (Evolução Futura)**:
+  - Construído sob o padrão *Adapter*. Caso futuramente seja implementada uma função serverless intermediária com token do **Melhor Envio** ou **SuperFrete**, basta preencher a variável `NEXT_PUBLIC_SHIPPING_API_URL` sem precisar alterar o frontend ou o estado do carrinho.
 
 ---
 
@@ -176,21 +194,27 @@ blackrhino/
 │   │   └── custom-academy/
 │   │       └── page.tsx        # Estúdio de bordados e pedidos B2B para equipes
 │   ├── components/
-│   │   ├── cart/               # Mochila de treino (CartDrawer com régua de frete grátis)
+│   │   ├── cart/               # Mochila de treino (CartDrawer, ShippingCalculator, WhatsAppCheckoutButton)
 │   │   ├── checkout/           # Modal de checkout com suporte a PIX e Cartão
 │   │   ├── catalog/            # Barra de filtros facetados e cards de kimono
 │   │   ├── home/               # Seção Hero, Matriz de Trançados, Anatomia e Depoimentos
 │   │   ├── layout/             # Barra de Navegação, Rodapé e Barra Mobile
 │   │   └── pdp/                # Seletor de graduação, galeria macro, calculadora e encolhimento
 │   ├── context/
-│   │   ├── CartContext.tsx     # Gerenciador de estado do carrinho e cálculo de frete
+│   │   ├── CartContext.tsx     # Gerenciador de estado do carrinho, CEP, cotações e totais
 │   │   └── LanguageContext.tsx # Contexto em português nativo (pt-BR)
 │   ├── data/
-│   │   └── products.ts         # Base mestra de produtos, especificações, estoque e revisões
+│   │   ├── products.ts         # Base mestra de produtos, especificações, estoque e revisões
+│   │   └── shippingRates.ts    # Tabela regional de frete por estado calibrada a partir de Brasília
+│   ├── lib/
+│   │   ├── imageLoader.ts      # Carregador de assets com basePath para GitHub Pages
+│   │   ├── shipping.ts         # Motor de frete (ViaCEP, BrasilAPI e Adapter de cotações)
+│   │   └── whatsapp.ts         # Formatador de pedido consolidado com frete para WhatsApp
 │   ├── translations/
-│   │   └── dictionary.ts       # Dicionário de termos técnicos do Jiu-Jitsu
+│   │   └── dictionary.ts       # Dicionário de termos técnicos do Jiu-Jitsu e textos de frete
 │   └── types/
-│       └── product.ts          # Interfaces TypeScript (Product, GiCut, CartItem, etc.)
+│       ├── product.ts          # Interfaces TypeScript (Product, GiCut, CartItem, etc.)
+│       └── shipping.ts         # Interfaces de cotação de frete, endereço e transportadoras
 ├── next.config.ts              # Configuração oficial do Next.js
 ├── tailwind.config.ts          # Tema tático, paleta de cores e tipografia
 ├── tsconfig.json               # Configurações do TypeScript e alias (@/*)
@@ -234,19 +258,21 @@ Para garantir que o site funcione perfeitamente no GitHub Pages sob o subcaminho
 ```mermaid
 flowchart TD
     A["Cliente / Navegador"] --> B["LanguageProvider (pt-BR)"]
-    A --> C["CartProvider (Moeda BRL • Frete Grátis R$ 350)"]
+    A --> C["CartProvider (Itens • Frete Brasileiro • Totais)"]
     B --> D["Dicionário Técnico & Componentes de UI"]
-    C --> E["Mochila de Treino (CartDrawer) & Checkout (PIX/Cartão)"]
-    C --> F["Formatador de Preços (formatPrice)"]
-    D --> G["Páginas: Home, Catálogo, PDP Faixas, PDP Kimonos, Avulsos, Equipes"]
-    F --> G
-    E --> G
+    C --> E["Mochila de Treino (CartDrawer)"]
+    E --> F["ShippingCalculator (ViaCEP / BrasilAPI)"]
+    F --> G["Motor de Frete (shippingRates.ts / Brasília-DF)"]
+    G --> C
+    E --> H["WhatsAppCheckoutButton"]
+    H --> I["WhatsApp Web / App (Pedido + CEP + Frete + Total)"]
+    E --> J["CheckoutModal (PIX / Cartão)"]
 ```
 
 1. **`CartContext`** (`src/context/CartContext.tsx`):
-   - Gerencia itens adicionados, graduação da faixa escolhida, corte, quantidades e valor do subtotal.
-   - Persistência automática em `localStorage` sob a chave `blackrhino_cart`.
-   - Limiar de frete grátis fixado em R$ 350,00.
+   - Gerencia itens adicionados, graduação da faixa, corte, quantidades, CEP (`shippingCep`), endereço (`shippingAddress`), cotações (`shippingQuotes`), frete selecionado (`selectedShippingQuote`), custo de frete (`shippingCost`) e valor total final (`finalTotal`).
+   - Recalcula dinamicamente se o subtotal ultrapassar **R$ 350,00** para habilitar Frete Grátis instantâneo.
+   - Persistência automática em `localStorage` sob `blackrhino_cart`, `blackrhino_shipping_cep` e `blackrhino_shipping_address`.
 2. **`LanguageContext`** (`src/context/LanguageContext.tsx`):
    - Estabelece o português (`pt`) como idioma padrão permanente.
    - Fornece o helper `t(chave)` conectado ao dicionário centralizado.
